@@ -19,7 +19,6 @@ public class TeleopSwerve extends CommandBase {
   private SlewRateLimiter strafeLimiter = new SlewRateLimiter(3.0);
   private SlewRateLimiter rotationLimiter = new SlewRateLimiter(3.0);
 
-  private boolean fieldOriented = false;
   private boolean onePress = false;
 
   private double translationVal;
@@ -58,19 +57,22 @@ public class TeleopSwerve extends CommandBase {
     }
     
     if (driver.getLeftBumperPressed() && onePress==false) {
-      fieldOriented = !fieldOriented;
+      Constants.Swerve.fieldOriented = !Constants.Swerve.fieldOriented;
       onePress = true;
     }else if(driver.getLeftBumperReleased()) {
       onePress = false;
     }
-    if (driver.getBackButton()) s_Swerve.zeroGyro(); 
+    if (driver.getBackButton()) s_Swerve.zeroGyro();
+    if (driver.getLeftTriggerAxis() == 1) s_Swerve.selectTab("Main");
+    if (driver.getRightTriggerAxis() == 1) s_Swerve.selectTab("Debug");
     // if (driver.getRawButton(Constants.JoystickConstants.btn_minus)) s_Swerve.resetOdometry(new Pose2d());
     /* Drive */
     s_Swerve.drive(
         new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed),
-        rotationVal * Constants.Swerve.maxAngularVelocity, fieldOriented,
+        rotationVal * Constants.Swerve.maxAngularVelocity, Constants.Swerve.fieldOriented,
         true);
 
-    SmartDashboard.putBoolean("isOriented", fieldOriented);
   }
 }
+    
+// SmartDashboard.putBoolean("isOriented", Constants.Swerve.fieldOriented);

@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -111,12 +112,17 @@ public class Swerve extends SubsystemBase {
     return gyro.getRoll();
   }
 
+  public void selectTab(String tab) {
+    Shuffleboard.selectTab(tab);
+  }
+
   @Override
   public void periodic() {
     swerveOdometry.update(getYaw(), getPositions());
     field.setRobotPose(getPose());
 
     SmartDashboard.putNumber("gyro ", getYaw().getDegrees());
+    SmartDashboard.putBoolean("isOriented ", Constants.Swerve.fieldOriented);
 
     for (SwerveModule mod : mSwerveMods) {
       SmartDashboard.putNumber(
@@ -124,6 +130,7 @@ public class Swerve extends SubsystemBase {
 
       SmartDashboard.putNumber(
           "Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+    }
   }
 
   // SmartDashboard.putNumber("ROLL", getFrontRoll());
@@ -131,5 +138,4 @@ public class Swerve extends SubsystemBase {
   
   // System.out.println("Gyro: " + getYaw().getDegrees());
   // System.out.println(swerveOdometry.getPoseMeters().getY() + ", " + swerveOdometry.getPoseMeters().getX() + ", " + swerveOdometry.getPoseMeters().getRotation().getDegrees());
-  }
 }

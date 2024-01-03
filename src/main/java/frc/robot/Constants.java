@@ -106,6 +106,9 @@ public final class Constants {
     /* Angle Encoder Invert */
     public static final boolean canCoderInvert = false; // invert cancoder(in CTREconfig)
 
+    /* Field Oriented */
+    public static boolean fieldOriented = false;
+
     /* Module Specific Constants */
     /* Front Left Module - Module 0 */
     public static final class Mod0 {
